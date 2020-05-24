@@ -16,7 +16,7 @@ galaxy_info:
   # - CC-BY-4.0
   license: license (GPL-2.0-or-later, MIT, etc)
 
-  min_ansible_version: 2.4
+  min_ansible_version: 2.8
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -47,7 +47,29 @@ galaxy_info:
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
 
-dependencies: []
+dependencies:
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
-  
+  - role: 'ansible-role-linux-zookeeper'
+    vars:
+      zoo_version: '{{ skywalking_zoo_version }}'
+      zoo_cluster: '{{ skywalking_zoo_cluster }}'
+      zoo_path: '{{ skywalking_zoo_path }}'
+      zoo_servers: '{{ skywalking_servers }}'
+      zoo_jvm_xmx: '{{ skywalking_zoo_jvm_xmx }}'
+      zoo_port: '{{ skywalking_zoo_port }}'
+      zoo_enable_auth: '{{ skywalking_zoo_enable_auth | bool }}'
+      zoo_user_super_passwd: '{{ skywalking_zoo_user_super_passwd }}'
+      zoo_user_client_arg: '{{ skywalking_zoo_user_client_arg }}'
+    when: skywalking_zoo_dept | bool
+  - role: 'ansible-role-linux-elasticsearch'
+    vars:
+      elastic_auth: '{{ skywalking_elastic_auth }}'
+      elastic_cluster: '{{ skywalking_elastic_cluster }}'
+      elastic_pass: '{{ skywalking_elastic_pass }}'
+      elastic_path: '{{ skywalking_elastic_path }}'
+      elastic_port_rest: '{{ skywalking_elastic_port_rest }}'
+      elastic_servers: '{{ skywalking_servers }}'
+      elastic_version: '{{ skywalking_elastic_version }}'
+      elastic_heap_size: '{{ skywalking_elastic_heap_size }}'
+    when: skywalking_elastic_dept | bool

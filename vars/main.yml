@@ -1,2 +1,26 @@
 ---
-# vars file for ansible-role-linux-skywalking
+skywalking_servers: "\
+  {% set _skywalking_servers = [] %}\
+  {% for host in groups[group_names[-1]] %}\
+    {% if hostvars[host]['skywalking_cluster'] is defined %}\
+      {% set _skywalking_cluster = hostvars[host]['skywalking_cluster'] | default('') %}\
+      {% if ( _skywalking_cluster == hostvars[host]['skywalking_cluster']) %}\
+        {% if _skywalking_servers.append(hostvars[host]['ansible_host']) %}{% endif %}\
+      {% endif %}\
+    {% endif %}\
+  {% endfor %}\
+  {{ _skywalking_servers }}"
+
+skywalking_soft_url: 'http://mirrors.tuna.tsinghua.edu.cn'
+
+skywalking_exclusions:
+  - 'bin/oapService.sh'
+  - 'bin/webappService.sh'
+  - 'config/application.yml'
+  - 'webapp/webapp.yml'
+
+skywalking_conf_scripts:
+  - { src: 'application.yml', dest: '{{ skywalking_path }}/skywalking/config' }
+  - { src: 'webapp.yml', dest: '{{ skywalking_path }}/skywalking/webapp' }
+  - { src: 'oapService.sh', dest: '{{ skywalking_path }}/skywalking/bin' }
+  - { src: 'webappService.sh', dest: '{{ skywalking_path }}/skywalking/bin' }

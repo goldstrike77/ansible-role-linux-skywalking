@@ -1,2 +1,56 @@
 ---
-# defaults file for ansible-role-linux-skywalking
+# General parameters #
+skywalking_is_install: false # A boolean value, whether install the Apache SkyWalking.
+skywalking_cluster: 'demo' # Cluster name of servers that implements distribution performance.
+skywalking_path: '/data' # This directory is used to store Apache SkyWalking server state.
+skywalking_version: '7.0.0' # Specify the Apache SkyWalking version.
+skywalking_oap_jvm_xmx: '1024' # Size of the OAP service heap in MB.
+skywalking_web_jvm_xmx: '512' # Size of the Web UI heap in MB.
+
+# Role dependencies #
+skywalking_elastic_dept: false # A boolean value, whether ElasticSearch use the same environment.
+skywalking_zoo_dept: false # A boolean value, whether ZooKeeper use the same environment.
+
+# Listen port #
+skywalking_port_arg:
+  gprc: '11800' # gRPC service port listens.
+  rest: '12800' # HTTP rest service port listens.
+  ui: '18080' # Web UI port listens.
+
+# Elastic parameters #
+skywalking_elastic_auth: false # A boolean value, Enable or Disable Elasticsearch authentication.
+skywalking_elastic_cluster: '{{ skywalking_cluster }}' # Specify name for your Elastic cluster name.
+skywalking_elastic_hosts: # List of Elasticsearch hosts Apache SkyWalking should connect to.
+  - 'localhost'
+skywalking_elastic_pass: 'changeme' # Elasticsearch authenticated password.
+skywalking_elastic_path: '{{ skywalking_path }}' # Specify the ElasticSearch data directory.
+skywalking_elastic_port_rest: '9200' # Elasticsearch REST port.
+skywalking_elastic_user: 'elastic' # Elasticsearch authenticated user.
+skywalking_elastic_version: '7.5.2' # Specify the Elasticsearch version.
+skywalking_elastic_heap_size: '2g' # Specify the maximum memory allocation pool for a Java virtual machine.
+
+# ZooKeeper parameters #
+skywalking_zoo_version: '3.5.8' # Specify the ZooKeeper version.
+skywalking_zoo_cluster: '{{ skywalking_cluster }}' # Name of ZooKeeper cluster.
+skywalking_zoo_path: '{{ skywalking_path }}' # Specify the ZooKeeper working directory.
+skywalking_zoo_servers: # List of ZooKeeper servers.
+  - 'localhost'
+skywalking_zoo_jvm_xmx: '2048' # Size of the heap in MB.
+skywalking_zoo_port: # ZooKeeper server listens.
+  admin: '18080' # The port the embedded Jetty server listens on.
+  client: '2181' # Client Port.
+  jmx: '9405' # Prometheus jmx_exporter listens.
+  leader: '2888' # Leader communication.
+  election: '3888' # Leader election.
+skywalking_zoo_enable_auth: false # Whether enable quorum authentication using SASL.
+skywalking_zoo_user_super_passwd: 'changeme' # Administrator priviledges user password.
+skywalking_zoo_user_client_arg: # Client authentication information.
+  - user: 'skywalking'
+    passwd: 'changeme'
+
+# System Variables #
+skywalking_arg:
+  ulimit_core: 'infinity' # The number of core dump launched by systemd.
+  ulimit_nofile: '10240' # The number of files launched by systemd.
+  ulimit_nproc: '10240' # The number of processes launched by systemd.
+  user: 'skywalking' # SkyWalking Service running user.

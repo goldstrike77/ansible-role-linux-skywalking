@@ -1,2 +1,24 @@
 ---
-# tasks file for ansible-role-linux-skywalking
+- name: Sets ElasticSearch node variables for Cluster.
+  set_fact:
+    skywalking_elastic_hosts: '{{ elastic_servers }}'
+  when:
+    - skywalking_elastic_dept | bool
+
+- name: Sets ZooKeeper node variables for Cluster.
+  set_fact:
+    skywalking_zoo_servers: '{{ zoo_servers }}'
+  when:
+    - skywalking_zoo_dept | bool
+
+- name: Include tasks for specific OS.
+  include: '{{ ansible_os_family }}.yml'
+
+- name: Include firewall tasks.
+  include: 'firewall.yml'
+
+- name: Include installation tasks.
+  include: 'install.yml'
+
+- name: Include configuration tasks.
+  include: 'configureation.yml'

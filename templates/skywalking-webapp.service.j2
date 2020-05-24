@@ -1,0 +1,18 @@
+[Unit]
+Description=skywalking-webapp
+After=network.target
+
+[Service]
+WorkingDirectory={{ skywalking_path }}/skywalking
+User={{ skywalking_arg.user }}
+LimitNOFILE={{ skywalking_arg.ulimit_nofile }}
+LimitNPROC={{ skywalking_arg.ulimit_nproc }}
+LimitCORE={{ skywalking_arg.ulimit_core }}
+LimitMEMLOCK={{ skywalking_arg.ulimit_core }}
+Type=forking
+ExecStart={{ skywalking_path }}/skywalking/bin/webappService.sh
+Restart=always
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

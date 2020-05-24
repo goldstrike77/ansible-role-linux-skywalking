@@ -1,0 +1,23 @@
+---
+- name: SkyWalking configuration file transfer.
+  template:
+    src: '{{ item.src }}.j2'
+    dest: '{{ item.dest }}/{{ item.src }}'
+    backup: 'yes'
+    owner: '{{ skywalking_arg.user }}'
+    group: '{{ skywalking_arg.user }}'
+    mode: '0644'
+  loop: '{{ skywalking_conf_scripts }}'
+  register: skywalking_config_update
+
+- name: SkyWalking systemd service file transfer.
+  template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop:
+    - 'skywalking-oap.service'
+    - 'skywalking-webapp.service'
+  register: skywalking_systemd_update

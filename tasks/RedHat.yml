@@ -1,0 +1,14 @@
+---
+- name: Include OS-specific variables.
+  include_vars: '{{ ansible_os_family }}.yml'
+
+- name: Install the SkyWalking dependents packages.
+  yum:
+    name: '{{ skywalking_dependent_packages }}'
+    state: 'present'
+    validate_certs: 'no'
+    disable_gpg_check: 'yes'
+  register: yum_status
+  until: yum_status is succeeded
+  retries: 3
+  delay: 5
