@@ -20,7 +20,7 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$OAP_HOME" ] && OAP_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 
 OAP_LOG_DIR="${OAP_LOG_DIR:-${OAP_HOME}/logs}"
-JAVA_OPTS=" -Xms{{ skywalking_oap_jvm_xmx }}M -Xmx{{ skywalking_oap_jvm_xmx }}M"
+JAVA_OPTS=" -Xms<< skywalking_oap_jvm_xmx >>M -Xmx<< skywalking_oap_jvm_xmx >>M"
 
 if [ ! -d "${OAP_LOG_DIR}" ]; then
     mkdir -p "${OAP_LOG_DIR}"

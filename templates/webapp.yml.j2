@@ -15,11 +15,11 @@
 # limitations under the License.
 
 server:
-  port: {{ skywalking_arg.ui | default('18080') }}
+  port: << skywalking_arg.ui | default('18080') >>
 
 collector:
   path: /graphql
   ribbon:
     ReadTimeout: 10000
     # Point to all backend's restHost:restPort, split by ,
-    listOfServers: {{ skywalking_servers | list | join(":" + skywalking_arg.rest + ",") }}:{{ skywalking_arg.rest }}
+    listOfServers: << skywalking_servers | list | join(":" + skywalking_arg.rest + ",") >>:<< skywalking_arg.rest >>

@@ -22,3 +22,20 @@
 
 - name: Include configuration tasks.
   include: 'configureation.yml'
+
+- name: Reload the SkyWalking initialize service.
+  shell: echo ''
+  notify: 'Ensure SkyWalking service is enabled'
+  when:
+    - skywalking_servers[0] in ansible_default_ipv4.address
+    - skywalking_update is changed or skywalking_config_update is changed or skywalking_systemd_update is changed
+
+- name: Force the handler to run immediately.
+  meta: flush_handlers
+
+- name: Reload the SkyWalking member service.
+  shell: echo ''
+  notify: 'Ensure SkyWalking service is enabled'
+  when:
+    - skywalking_servers[0] not in ansible_default_ipv4.address
+    - skywalking_update is changed or skywalking_config_update is changed or skywalking_systemd_update is changed

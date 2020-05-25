@@ -20,7 +20,7 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$WEBAPP_HOME" ] && WEBAPP_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 
 WEBAPP_LOG_DIR="${WEBAPP_LOG_DIR:-${WEBAPP_HOME}/logs}"
-JAVA_OPTS=" -Xms{{ skywalking_web_jvm_xmx }}M -Xmx{{ skywalking_web_jvm_xmx }}M"
+JAVA_OPTS=" -Xms<< skywalking_web_jvm_xmx>>M -Xmx<< skywalking_web_jvm_xmx >>M"
 JAR_PATH="${WEBAPP_HOME}/webapp"
 
 if [ ! -d "${WEBAPP_LOG_DIR}" ]; then

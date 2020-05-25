@@ -4,6 +4,8 @@
     src: '{{ item.src }}.j2'
     dest: '{{ item.dest }}/{{ item.src }}'
     backup: 'yes'
+    variable_start_string: "<<"
+    variable_end_string: ">>"
     owner: '{{ skywalking_arg.user }}'
     group: '{{ skywalking_arg.user }}'
     mode: '0644'

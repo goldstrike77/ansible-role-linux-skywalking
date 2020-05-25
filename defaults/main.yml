@@ -12,10 +12,13 @@ skywalking_elastic_dept: false # A boolean value, whether ElasticSearch use the 
 skywalking_zoo_dept: false # A boolean value, whether ZooKeeper use the same environment.
 
 # Listen port #
-skywalking_port_arg:
+skywalking_port_arg: # Defines communication port.
   gprc: '11800' # gRPC service port listens.
   rest: '12800' # HTTP rest service port listens.
   ui: '18080' # Web UI port listens.
+  exporter: '9870' # Prometheus exporter port listens.
+  zipkin: '9411' # Zipkin receiver port listens.
+  jaeger: '14250' # Zipkin receiver port listens.
 
 # Elastic parameters #
 skywalking_elastic_auth: false # A boolean value, Enable or Disable Elasticsearch authentication.
