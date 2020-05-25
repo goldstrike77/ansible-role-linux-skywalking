@@ -12,10 +12,11 @@
 
 - name: Install Apache SkyWalking.
   unarchive:
-    src: 'http://{{ skywalking_soft_url }}/apache/skywalking/{{ skywalking_version }}/apache-skywalking-apm-es7-{{ skywalking_version }}.tar.gz'
+    src: '{{ skywalking_soft_url }}/apache/skywalking/{{ skywalking_version }}/apache-skywalking-apm-es7-{{ skywalking_version }}.tar.gz'
     dest: '{{ skywalking_path }}/skywalking'
     owner: '{{ skywalking_arg.user }}'
     group: '{{ skywalking_arg.user }}'
+    mode: '0750'
     exclude: '{{ skywalking_exclusions }}'
     extra_opts: [--strip-components=1]
     remote_src: 'yes'

@@ -1,15 +1,17 @@
 ---
+- name: Sets SkyWalking node variables for Cluster.
+  set_fact:
+    skywalking_hosts: '{{ skywalking_servers }}'
+
 - name: Sets ElasticSearch node variables for Cluster.
   set_fact:
     skywalking_elastic_hosts: '{{ elastic_servers }}'
-  when:
-    - skywalking_elastic_dept | bool
+  when: skywalking_elastic_dept | bool
 
 - name: Sets ZooKeeper node variables for Cluster.
   set_fact:
     skywalking_zoo_servers: '{{ zoo_servers }}'
-  when:
-    - skywalking_zoo_dept | bool
+  when: skywalking_zoo_dept | bool
 
 - name: Include tasks for specific OS.
   include: '{{ ansible_os_family }}.yml'
@@ -33,9 +35,22 @@
 - name: Force the handler to run immediately.
   meta: flush_handlers
 
+- name: sleep for 300 seconds for storage initialize.
+  wait_for:
+    timeout: '300'
+  when:
+    - skywalking_servers | length > 1
+    - skywalking_update is changed or skywalking_config_update is changed or skywalking_systemd_update is changed
+
 - name: Reload the SkyWalking member service.
   shell: echo ''
   notify: 'Ensure SkyWalking service is enabled'
   when:
     - skywalking_servers[0] not in ansible_default_ipv4.address
     - skywalking_update is changed or skywalking_config_update is changed or skywalking_systemd_update is changed
+
+- name: Registered with HashiCorp Consul
+  include: 'register.yml'
+  when:
+    - exporter_is_install | bool
+    - consul_public_register | bool

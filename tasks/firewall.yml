@@ -8,6 +8,7 @@
     port: '{{ item.value }}/tcp'
     zone: 'public'
     permanent: 'yes'
+    immediate: 'true'
     state: 'enabled'
   loop: '{{ skywalking_port_arg | dict2items }}'
   when:

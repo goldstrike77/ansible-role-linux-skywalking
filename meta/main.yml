@@ -61,7 +61,7 @@ dependencies:
       zoo_enable_auth: '{{ skywalking_zoo_enable_auth | bool }}'
       zoo_user_super_passwd: '{{ skywalking_zoo_user_super_passwd }}'
       zoo_user_client_arg: '{{ skywalking_zoo_user_client_arg }}'
-    when: skywalking_zoo_dept | bool
+    when: skywalking_zoo_dept | bool or skywalking_servers | length > 1
   - role: 'ansible-role-linux-elasticsearch'
     vars:
       elastic_auth: '{{ skywalking_elastic_auth }}'

@@ -22,4 +22,4 @@ collector:
   ribbon:
     ReadTimeout: 10000
     # Point to all backend's restHost:restPort, split by ,
-    listOfServers: << skywalking_servers | list | join(":" + skywalking_arg.rest + ",") >>:<< skywalking_arg.rest >>
+    listOfServers: << skywalking_hosts | list | join(":" + skywalking_port_arg.rest + ",") >>:<< skywalking_port_arg.rest >>

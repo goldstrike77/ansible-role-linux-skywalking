@@ -8,7 +8,7 @@
     variable_end_string: ">>"
     owner: '{{ skywalking_arg.user }}'
     group: '{{ skywalking_arg.user }}'
-    mode: '0644'
+    mode: '0755'
   loop: '{{ skywalking_conf_scripts }}'
   register: skywalking_config_update
 

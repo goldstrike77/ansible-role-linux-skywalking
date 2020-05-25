@@ -7,18 +7,22 @@ skywalking_version: '7.0.0' # Specify the Apache SkyWalking version.
 skywalking_oap_jvm_xmx: '1024' # Size of the OAP service heap in MB.
 skywalking_web_jvm_xmx: '512' # Size of the Web UI heap in MB.
 
+# Storage Data TTL setting #
+skywalking_datattl:
+  record: '5' # Unit is day, affects Record data, including tracing and alarm.
+  otherMetrics: '30' # Unit is day, affects minute/hour/day dimensions of metrics.
+  monthMetrics: '6' # Unit is month, affects month dimension of metrics.
+
 # Role dependencies #
 skywalking_elastic_dept: false # A boolean value, whether ElasticSearch use the same environment.
 skywalking_zoo_dept: false # A boolean value, whether ZooKeeper use the same environment.
 
 # Listen port #
 skywalking_port_arg: # Defines communication port.
-  gprc: '11800' # gRPC service port listens.
+  grpc: '11800' # gRPC service port listens.
   rest: '12800' # HTTP rest service port listens.
   ui: '18080' # Web UI port listens.
-  exporter: '9870' # Prometheus exporter port listens.
-  zipkin: '9411' # Zipkin receiver port listens.
-  jaeger: '14250' # Zipkin receiver port listens.
+  exporter: '1234' # Prometheus exporter port listens.
 
 # Elastic parameters #
 skywalking_elastic_auth: false # A boolean value, Enable or Disable Elasticsearch authentication.
@@ -57,3 +61,19 @@ skywalking_arg:
   ulimit_nofile: '10240' # The number of files launched by systemd.
   ulimit_nproc: '10240' # The number of processes launched by systemd.
   user: 'skywalking' # SkyWalking Service running user.
+
+# Service Mesh #
+environments: 'Development' # Define the service environment.
+#tags: # Define the service custom label.
+#  subscription: 'default'
+#  owner: 'nobody'
+#  department: 'Infrastructure'
+#  organization: 'The Company'
+#  region: 'IDC01'
+exporter_is_install: false # Whether to install prometheus exporter.
+consul_public_register: false # Whether register a exporter service with public consul client.
+consul_public_exporter_token: '00000000-0000-0000-0000-000000000000' # Public Consul client ACL token.
+consul_public_http_prot: 'https' # The consul Hypertext Transfer Protocol.
+consul_public_http_port: '8500' # The consul HTTP API port.
+consul_public_clients: # List of public consul clients.
+  - '127.0.0.1'

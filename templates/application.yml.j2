@@ -15,7 +15,7 @@
 # limitations under the License.
 
 cluster:
-  selector: ${SW_CLUSTER:{% if skywalking_servers | length == 1 %}standalone{% else %}zookeeper{% endif %}}
+  selector: ${SW_CLUSTER:{% if skywalking_hosts | length == 1 %}standalone{% else %}zookeeper{% endif %}}
   standalone:
   # Please check your ZooKeeper is 3.5+, However, it is also compatible with ZooKeeper 3.4.x. Replace the ZooKeeper 3.5+
   # library the oap-libs folder with your ZooKeeper 3.4.x library.
@@ -41,7 +41,7 @@ core:
     restPort: ${SW_CORE_REST_PORT:<< skywalking_port_arg.rest | default ('12800') >>}
     restContextPath: ${SW_CORE_REST_CONTEXT_PATH:/}
     gRPCHost: ${SW_CORE_GRPC_HOST:<< ansible_default_ipv4.address >>}
-    gRPCPort: ${SW_CORE_GRPC_PORT:<< skywalking_port_arg.gprc | default ('11800') >>}
+    gRPCPort: ${SW_CORE_GRPC_PORT:<< skywalking_port_arg.grpc | default ('11800') >>}
     gRPCSslEnabled: ${SW_CORE_GRPC_SSL_ENABLED:false}
     gRPCSslKeyPath: ${SW_CORE_GRPC_SSL_KEY_PATH:""}
     gRPCSslCertChainPath: ${SW_CORE_GRPC_SSL_CERT_CHAIN_PATH:""}
@@ -70,11 +70,11 @@ core:
 storage:
   selector: ${SW_STORAGE:elasticsearch7}
   elasticsearch7:
-    nameSpace: ${SW_NAMESPACE:"elasticsearch7"}
+    nameSpace: ${SW_NAMESPACE:"skywalking"}
     clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:<< skywalking_elastic_hosts | list | join(":" + skywalking_elastic_port_rest + ",") >>:<< skywalking_elastic_port_rest >>}
     protocol: ${SW_STORAGE_ES_HTTP_PROTOCOL:"http"}
-    trustStorePath: ${SW_SW_STORAGE_ES_SSL_JKS_PATH:"../es_keystore.jks"}
-    trustStorePass: ${SW_SW_STORAGE_ES_SSL_JKS_PASS:""}
+#    trustStorePath: ${SW_SW_STORAGE_ES_SSL_JKS_PATH:"../es_keystore.jks"}
+#    trustStorePass: ${SW_SW_STORAGE_ES_SSL_JKS_PASS:""}
     enablePackedDownsampling: ${SW_STORAGE_ENABLE_PACKED_DOWNSAMPLING:true} # Hour and Day metrics will be merged into minute index.
     dayStep: ${SW_STORAGE_DAY_STEP:1} # Represent the number of days in the one minute/hour/day index.
     user: ${SW_ES_USER:"<< skywalking_elastic_user >>"}
@@ -83,18 +83,18 @@ storage:
     indexShardsNumber: ${SW_STORAGE_ES_INDEX_SHARDS_NUMBER:<< skywalking_elastic_hosts | length >>}
     indexReplicasNumber: ${SW_STORAGE_ES_INDEX_REPLICAS_NUMBER:{% if skywalking_elastic_hosts | length == 1 %}0{% else %}1{% endif %}}
     # Those data TTL settings will override the same settings in core module.
-    recordDataTTL: ${SW_STORAGE_ES_RECORD_DATA_TTL:7} # Unit is day
-    otherMetricsDataTTL: ${SW_STORAGE_ES_OTHER_METRIC_DATA_TTL:45} # Unit is day
-    monthMetricsDataTTL: ${SW_STORAGE_ES_MONTH_METRIC_DATA_TTL:18} # Unit is month
+    recordDataTTL: ${SW_STORAGE_ES_RECORD_DATA_TTL:<< skywalking_datattl.record | default('5') >>} # Unit is day
+    otherMetricsDataTTL: ${SW_STORAGE_ES_OTHER_METRIC_DATA_TTL:<< skywalking_datattl.otherMetrics | default('30') >>} # Unit is day
+    monthMetricsDataTTL: ${SW_STORAGE_ES_MONTH_METRIC_DATA_TTL:<< skywalking_datattl.monthMetrics | default('6') >>} # Unit is month
     # Batch process setting, refer to https://www.elastic.co/guide/en/elasticsearch/client/java-api/5.5/java-docs-bulk-processor.html
-    bulkActions: ${SW_STORAGE_ES_BULK_ACTIONS:5000} # Execute the bulk every 1000 requests
-    flushInterval: ${SW_STORAGE_ES_FLUSH_INTERVAL:30} # flush the bulk every 10 seconds whatever the number of requests
+    bulkActions: ${SW_STORAGE_ES_BULK_ACTIONS:5000} # Execute the bulk every 5000 requests
+    flushInterval: ${SW_STORAGE_ES_FLUSH_INTERVAL:30} # flush the bulk every 30 seconds whatever the number of requests
     concurrentRequests: ${SW_STORAGE_ES_CONCURRENT_REQUESTS:4} # the number of concurrent requests
     resultWindowMaxSize: ${SW_STORAGE_ES_QUERY_MAX_WINDOW_SIZE:10000}
     metadataQueryMaxSize: ${SW_STORAGE_ES_QUERY_MAX_SIZE:5000}
     segmentQueryMaxSize: ${SW_STORAGE_ES_QUERY_SEGMENT_SIZE:200}
     profileTaskQueryMaxSize: ${SW_STORAGE_ES_QUERY_PROFILE_TASK_SIZE:200}
-    advanced: ${SW_STORAGE_ES_ADVANCED:""}
+    advanced: ${SW_STORAGE_ES_ADVANCED:"{\"index.translog.durability\":\"async\",\"index.translog.sync_interval\":\"30s\"}"}
 
 receiver-sharing-server:
   selector: ${SW_RECEIVER_SHARING_SERVER:default}
@@ -108,8 +108,8 @@ receiver-trace:
   selector: ${SW_RECEIVER_TRACE:default}
   default:
     bufferPath: ${SW_RECEIVER_BUFFER_PATH:<< skywalking_path >>/skywalking/trace-buffer/}  # Path to trace buffer files, suggest to use absolute path
-    bufferOffsetMaxFileSize: ${SW_RECEIVER_BUFFER_OFFSET_MAX_FILE_SIZE:100} # Unit is MB
-    bufferDataMaxFileSize: ${SW_RECEIVER_BUFFER_DATA_MAX_FILE_SIZE:500} # Unit is MB
+    bufferOffsetMaxFileSize: ${SW_RECEIVER_BUFFER_OFFSET_MAX_FILE_SIZE:1000} # Unit is MB
+    bufferDataMaxFileSize: ${SW_RECEIVER_BUFFER_DATA_MAX_FILE_SIZE:5000} # Unit is MB
     bufferFileCleanWhenRestart: ${SW_RECEIVER_BUFFER_FILE_CLEAN_WHEN_RESTART:false}
     sampleRate: ${SW_TRACE_SAMPLE_RATE:10000} # The sample rate precision is 1/10000. 10000 means 100% sample in default.
     slowDBAccessThreshold: ${SW_SLOW_DB_THRESHOLD:default:200,mongodb:100} # The slow database access thresholds. Unit ms.
@@ -130,8 +130,8 @@ service-mesh:
   selector: ${SW_SERVICE_MESH:default}
   default:
     bufferPath: ${SW_SERVICE_MESH_BUFFER_PATH:<< skywalking_path >>/skywalking/mesh-buffer/}  # Path to trace buffer files, suggest to use absolute path
-    bufferOffsetMaxFileSize: ${SW_SERVICE_MESH_OFFSET_MAX_FILE_SIZE:100} # Unit is MB
-    bufferDataMaxFileSize: ${SW_SERVICE_MESH_BUFFER_DATA_MAX_FILE_SIZE:500} # Unit is MB
+    bufferOffsetMaxFileSize: ${SW_SERVICE_MESH_OFFSET_MAX_FILE_SIZE:1000} # Unit is MB
+    bufferDataMaxFileSize: ${SW_SERVICE_MESH_BUFFER_DATA_MAX_FILE_SIZE:5000} # Unit is MB
     bufferFileCleanWhenRestart: ${SW_SERVICE_MESH_BUFFER_FILE_CLEAN_WHEN_RESTART:false}
 
 istio-telemetry:
@@ -146,15 +146,15 @@ envoy-metric:
 receiver_zipkin:
   selector: ${SW_RECEIVER_ZIPKIN:-}
   default:
-    host: ${SW_RECEIVER_ZIPKIN_HOST:<< ansible_default_ipv4.address >>}
-    port: ${SW_RECEIVER_ZIPKIN_PORT:<< skywalking_port_arg.zipkin >>}
+    host: ${SW_RECEIVER_ZIPKIN_HOST:0.0.0.0}
+    port: ${SW_RECEIVER_ZIPKIN_PORT:9411}
     contextPath: ${SW_RECEIVER_ZIPKIN_CONTEXT_PATH:/}
 
 receiver_jaeger:
   selector: ${SW_RECEIVER_JAEGER:-}
   default:
-    gRPCHost: ${SW_RECEIVER_JAEGER_HOST:<< ansible_default_ipv4.address >>}
-    gRPCPort: ${SW_RECEIVER_JAEGER_PORT:<< skywalking_port_arg.jaeger >>}
+    gRPCHost: ${SW_RECEIVER_JAEGER_HOST:0.0.0.0}
+    gRPCPort: ${SW_RECEIVER_JAEGER_PORT:14250}
 
 query:
   selector: ${SW_QUERY:graphql}
@@ -166,11 +166,10 @@ alarm:
   default:
 
 telemetry:
-  selector: ${SW_TELEMETRY:none}
-  none:
+  selector: ${SW_TELEMETRY:prometheus}
   prometheus:
-    host: ${SW_TELEMETRY_PROMETHEUS_HOST:0.0.0.0}
-    port: ${SW_TELEMETRY_PROMETHEUS_PORT:1234}
+    host: ${SW_TELEMETRY_PROMETHEUS_HOST:<< ansible_default_ipv4.address >>}
+    port: ${SW_TELEMETRY_PROMETHEUS_PORT:<< skywalking_port_arg.exporter | default('1234') >>}
   so11y:
     prometheusExporterEnabled: ${SW_TELEMETRY_SO11Y_PROMETHEUS_ENABLED:true}
     prometheusExporterHost: ${SW_TELEMETRY_PROMETHEUS_HOST:0.0.0.0}
@@ -187,5 +186,5 @@ configuration:
 exporter:
   selector: ${SW_EXPORTER:-}
   grpc:
-    targetHost: ${SW_EXPORTER_GRPC_HOST:<< ansible_default_ipv4.address >>}
-    targetPort: ${SW_EXPORTER_GRPC_PORT:<< skywalking_port_arg.9870 >>}
+    targetHost: ${SW_EXPORTER_GRPC_HOST:127.0.0.1}
+    targetPort: ${SW_EXPORTER_GRPC_PORT:9870}
