@@ -65,7 +65,7 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 * `skywalking_zoo_dept`: A boolean value, whether ZooKeeper use the same environment.
 
 ##### Listen port
-* `skywalking_port_arg`: # Defines communication port.
+* `skywalking_port_arg`: Defines communication port.
 
 ##### Elastic parameters
 * `skywalking_elastic_auth`: A boolean value, Enable or Disable Elasticsearch authentication.
