@@ -33,7 +33,9 @@ Apache SkyWalking is an open source APM system, including monitoring, tracing, d
 
 ## Requirements
 ### Operating systems
-This Ansible role installs skywalking on linux operating system, including establishing a filesystem structure and server configuration with some common operational features. This role will work on the following operating systems:
+This Ansible role installs skywalking on linux operating system, including establishing a filesystem structure and server configuration with some common operational features. Only cluster management of ZooKeeper and Elasticsearch backend storage is supported.
+
+This role will work on the following operating systems:
 
   * CentOS 7
 
@@ -83,7 +85,7 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 * `skywalking_zoo_servers`: List of ZooKeeper servers.
 * `skywalking_zoo_jvm_xmx`: Size of the heap in MB.
 * `skywalking_zoo_port`: ZooKeeper server listens.
-* `skywalking_zoo_enable_auth`: false Whether enable quorum authentication using SASL.
+* `skywalking_zoo_enable_auth`: Whether enable quorum authentication using SASL.
 * `skywalking_zoo_user_super_passwd`: Administrator priviledges user password.
 * `skywalking_zoo_user_client_arg`: Client authentication information.
 
