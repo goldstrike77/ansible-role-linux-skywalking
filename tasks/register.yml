@@ -15,7 +15,7 @@
   uri:
     url: '{{ consul_public_http_prot }}://{{ ansible_default_ipv4.address }}:{{ consul_public_http_port }}/v1/agent/service/register'
     method: 'PUT'
-    body: '{"tags":["skywalking"],"ID":"{{ group_names[-1] | upper | regex_replace("_", "-") }}-{{ environments | upper | regex_replace("_", "-") }}-{{ skywalking_cluster | upper | regex_replace("_", "-") }}-skywalking","name":"{{ group_names[-1] | upper | regex_replace("_", "-") }}-{{ environments | upper | regex_replace("_", "-") }}-{{ skywalking_cluster | upper | regex_replace("_", "-") }}-skywalking","address":"{{ ansible_default_ipv4.address }}","port":{{ skywalking_port_arg.rest }},"checks":[{"tcp":"{{ ansible_default_ipv4.address }}:{{ skywalking_port_arg.rest }}","interval":"10s","timeout":"10s"}]}'
+    body: '{"tags":["skywalking"],"ID":"{{ group_names[-1] | upper | regex_replace("_", "-") }}-{{ environments | upper | regex_replace("_", "-") }}-skywalking","name":"{{ group_names[-1] | upper | regex_replace("_", "-") }}-{{ environments | upper | regex_replace("_", "-") }}-skywalking","address":"{{ ansible_default_ipv4.address }}","port":{{ skywalking_port_arg.rest }},"checks":[{"tcp":"{{ ansible_default_ipv4.address }}:{{ skywalking_port_arg.rest }}","interval":"10s","timeout":"10s"}]}'
     body_format: 'json'
     status_code: '200'
     headers:
