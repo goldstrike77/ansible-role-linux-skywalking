@@ -21,7 +21,7 @@ skywalking_zoo_dept: false # A boolean value, whether ZooKeeper use the same env
 skywalking_port_arg: # Defines communication port.
   grpc: '11800' # gRPC service port listens.
   rest: '12800' # HTTP rest service port listens.
-  ui: '18080' # Web UI port listens.
+  ui: '13800' # Web UI port listens.
   exporter: '1234' # Prometheus exporter port listens.
 
 # Elastic parameters #

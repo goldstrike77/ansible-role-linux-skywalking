@@ -109,7 +109,7 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 There are some variables in vars/main.yml:
 
 ## Dependencies
-- Ansible versions >= 2.8 are supported.
+- Ansible versions >= 2.8
 - Python >= 2.7.5 
 - [Elasticsearch](https://github.com/goldstrike77/ansible-role-linux-elasticsearch.git)
 - [ZooKeeper](https://github.com/goldstrike77/ansible-role-linux-zookeeper.git) 
@@ -143,7 +143,7 @@ You can also use the group_vars or the host_vars files for setting the variables
     skywalking_port_arg:
       grpc: '11800'
       rest: '12800'
-      ui: '18080'
+      ui: '13800'
       exporter: '1234'
     skywalking_elastic_auth: true
     skywalking_elastic_cluster: '{{ skywalking_cluster }}'
