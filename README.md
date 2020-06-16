@@ -69,6 +69,7 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 
 ##### Elastic parameters
 * `skywalking_elastic_auth`: A boolean value, Enable or Disable Elasticsearch authentication.
+* `skywalking_elastic_https`: A boolean value, whether Encrypting HTTP client communications.
 * `skywalking_elastic_cluster`: Specify name for your Elastic cluster name.
 * `skywalking_elastic_hosts`: List of Elasticsearch hosts Apache SkyWalking should connect to.
 * `skywalking_elastic_pass`: Elasticsearch authenticated password.
@@ -99,7 +100,7 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 * `environments`: Define the service environment.
 * `tags`: Define the service custom label.
 * `exporter_is_install`: Whether to install prometheus exporter.
-* `consul_public_register`: false Whether register a exporter service with public consul client.
+* `consul_public_register`: Whether register a exporter service with public consul client.
 * `consul_public_exporter_token`: Public Consul client ACL token.
 * `consul_public_http_prot`: The consul Hypertext Transfer Protocol.
 * `consul_public_clients`: List of public consul clients.
@@ -110,7 +111,7 @@ There are some variables in vars/main.yml:
 
 ## Dependencies
 - Ansible versions >= 2.8
-- Python >= 2.7.5 
+- Python >= 2.7.5
 - [Elasticsearch](https://github.com/goldstrike77/ansible-role-linux-elasticsearch.git)
 - [ZooKeeper](https://github.com/goldstrike77/ansible-role-linux-zookeeper.git) 
 
@@ -122,75 +123,80 @@ See tests/inventory for an example.
 ### Vars in role configuration
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: all
-      roles:
-         - role: ansible-role-linux-skywalking
+```yaml
+- hosts: all
+  roles:
+     - role: ansible-role-linux-skywalking
+```
 
 ### Combination of group vars and playbook
 You can also use the group_vars or the host_vars files for setting the variables needed for this role. File you should change: group_vars/all or host_vars/`group_name`
 
-    skywalking_cluster: 'demo'
-    skywalking_path: '/data'
-    skywalking_version: '7.0.0'
-    skywalking_oap_jvm_xmx: '1024'
-    skywalking_web_jvm_xmx: '512'
-    skywalking_datattl:
-      record: '5'
-      otherMetrics: '30'
-      monthMetrics: '6'
-    skywalking_elastic_dept: true
-    skywalking_zoo_dept: true
-    skywalking_port_arg:
-      grpc: '11800'
-      rest: '12800'
-      ui: '13800'
-      exporter: '1234'
-    skywalking_elastic_auth: true
-    skywalking_elastic_cluster: '{{ skywalking_cluster }}'
-    skywalking_elastic_hosts:
-      - 'localhost'
-    skywalking_elastic_pass: 'changeme'
-    skywalking_elastic_path: '{{ skywalking_path }}'
-    skywalking_elastic_port_rest: '9200'
-    skywalking_elastic_user: 'elastic'
-    skywalking_elastic_version: '7.5.2'
-    skywalking_elastic_heap_size: '2g'
-    skywalking_zoo_version: '3.5.8'
-    skywalking_zoo_cluster: '{{ skywalking_cluster }}'
-    skywalking_zoo_path: '{{ skywalking_path }}'
-    skywalking_zoo_servers:
-      - 'localhost'
-    skywalking_zoo_jvm_xmx: '2048'
-    skywalking_zoo_port:
-      admin: '18080'
-      client: '2181'
-      jmx: '9405'
-      leader: '2888'
-      election: '3888'
-    skywalking_zoo_enable_auth: false
-    skywalking_zoo_user_super_passwd: 'changeme'
-    skywalking_zoo_user_client_arg:
-      - user: 'skywalking'
-        passwd: 'changeme'
-    skywalking_arg:
-      ulimit_core: 'infinity'
-      ulimit_nofile: '10240'
-      ulimit_nproc: '10240'
-      user: 'skywalking'
-    environments: 'Development'
-    tags:
-      subscription: 'default'
-      owner: 'nobody'
-      department: 'Infrastructure'
-      organization: 'The Company'
-      region: 'IDC01'
-    exporter_is_install: false
-    consul_public_register: false
-    consul_public_exporter_token: '00000000-0000-0000-0000-000000000000'
-    consul_public_http_prot: 'https'
-    consul_public_http_port: '8500'
-    consul_public_clients:
-      - '127.0.0.1'
+```yaml
+skywalking_cluster: 'demo'
+skywalking_path: '/data'
+skywalking_version: '7.0.0'
+skywalking_oap_jvm_xmx: '1024'
+skywalking_web_jvm_xmx: '512'
+skywalking_datattl:
+  record: '5'
+  otherMetrics: '30'
+  monthMetrics: '6'
+skywalking_elastic_dept: true
+skywalking_zoo_dept: true
+skywalking_port_arg:
+  grpc: '11800'
+  rest: '12800'
+  ui: '13800'
+  exporter: '1234'
+skywalking_elastic_auth: true
+skywalking_elastic_https: true
+skywalking_elastic_cluster: '{{ skywalking_cluster }}'
+skywalking_elastic_hosts:
+  - 'localhost'
+skywalking_elastic_pass: 'changeme'
+skywalking_elastic_path: '{{ skywalking_path }}'
+skywalking_elastic_port_rest: '9200'
+skywalking_elastic_user: 'elastic'
+skywalking_elastic_version: '7.5.2'
+skywalking_elastic_heap_size: '2g'
+skywalking_zoo_version: '3.5.8'
+skywalking_zoo_cluster: '{{ skywalking_cluster }}'
+skywalking_zoo_path: '{{ skywalking_path }}'
+skywalking_zoo_servers:
+  - 'localhost'
+skywalking_zoo_jvm_xmx: '2048'
+skywalking_zoo_port:
+  admin: '18080'
+  client: '2181'
+  jmx: '9405'
+  leader: '2888'
+  election: '3888'
+skywalking_zoo_enable_auth: false
+skywalking_zoo_user_super_passwd: 'changeme'
+skywalking_zoo_user_client_arg:
+  - user: 'skywalking'
+    passwd: 'changeme'
+skywalking_arg:
+  ulimit_core: 'infinity'
+  ulimit_nofile: '10240'
+  ulimit_nproc: '10240'
+  user: 'skywalking'
+environments: 'Development'
+tags:
+  subscription: 'default'
+  owner: 'nobody'
+  department: 'Infrastructure'
+  organization: 'The Company'
+  region: 'IDC01'
+exporter_is_install: false
+consul_public_register: false
+consul_public_exporter_token: '00000000-0000-0000-0000-000000000000'
+consul_public_http_prot: 'https'
+consul_public_http_port: '8500'
+consul_public_clients:
+  - '127.0.0.1'
+```
 
 ## License
 ![](https://img.shields.io/badge/MIT-purple.svg?style=for-the-badge)

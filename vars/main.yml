@@ -2,11 +2,9 @@
 skywalking_servers: "\
   {% set _skywalking_servers = [] %}\
   {% for host in groups[group_names[-1]] %}\
-    {% if hostvars[host]['skywalking_cluster'] is defined %}\
-      {% set _skywalking_cluster = hostvars[host]['skywalking_cluster'] | default('') %}\
-      {% if ( _skywalking_cluster == hostvars[host]['skywalking_cluster']) %}\
-        {% if _skywalking_servers.append(hostvars[host]['ansible_host']) %}{% endif %}\
-      {% endif %}\
+    {% set _skywalking_cluster = skywalking_cluster | default('') %}\
+    {% if ( _skywalking_cluster == skywalking_cluster ) %}\
+      {% if _skywalking_servers.append(hostvars[host]['ansible_host']) %}{% endif %}\
     {% endif %}\
   {% endfor %}\
   {{ _skywalking_servers }}"

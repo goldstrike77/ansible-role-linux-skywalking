@@ -72,7 +72,7 @@ storage:
   elasticsearch7:
     nameSpace: ${SW_NAMESPACE:"skywalking"}
     clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:<< skywalking_elastic_hosts | list | join(":" + skywalking_elastic_port_rest + ",") >>:<< skywalking_elastic_port_rest >>}
-    protocol: ${SW_STORAGE_ES_HTTP_PROTOCOL:"http"}
+    protocol: ${SW_STORAGE_ES_HTTP_PROTOCOL:"{% if skywalking_elastic_auth | bool and skywalking_elastic_https | bool %}https{% else %}http{% endif %}"}
 #    trustStorePath: ${SW_SW_STORAGE_ES_SSL_JKS_PATH:"../es_keystore.jks"}
 #    trustStorePass: ${SW_SW_STORAGE_ES_SSL_JKS_PASS:""}
     enablePackedDownsampling: ${SW_STORAGE_ENABLE_PACKED_DOWNSAMPLING:true} # Hour and Day metrics will be merged into minute index.

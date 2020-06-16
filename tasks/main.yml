@@ -25,6 +25,12 @@
 - name: Include configuration tasks.
   include: 'configureation.yml'
 
+- name: Include certificate tasks.
+  include: 'certificates.yml'
+  when:
+    - 'skywalking_elastic_auth | bool'
+    - 'skywalking_elastic_https | bool'
+
 - name: Reload the SkyWalking initialize service.
   shell: echo ''
   notify: 'Ensure SkyWalking service is enabled'

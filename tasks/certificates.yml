@@ -1,0 +1,21 @@
+---
+- name: Creating Certificate folder.
+  file:
+    dest: '{{ skywalking_path }}/skywalking/ssl'
+    state: 'directory'
+    owner: '{{ skywalking_arg.user }}'
+    mode: '1750'
+- name: Selfsigned CA file transfer.
+  copy:
+    src: 'ssl/ca-cert.pem'
+    dest: '{{ skywalking_path }}/skywalking/ssl/ca-cert.pem'
+    owner: '{{ skywalking_arg.user }}'
+    mode: '640'
+- name: Import Selfsigned CA certificate to cacerts keystore.
+  java_cert:
+    cert_path: '{{ skywalking_path }}/skywalking/ssl/ca-cert.pem'
+    cert_alias: 'default'
+    keystore_path: '/etc/pki/ca-trust/extracted/java/cacerts'
+    keystore_pass: 'changeit'
+    executable: '/bin/keytool'
+    state: 'present'

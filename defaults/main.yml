@@ -1,7 +1,7 @@
 ---
 # General parameters #
 skywalking_is_install: false # A boolean value, whether install the Apache SkyWalking.
-skywalking_cluster: 'demo' # Cluster name of servers that implements distribution performance.
+skywalking_cluster: 'skywalking' # Cluster name of servers that implements distribution performance.
 skywalking_path: '/data' # This directory is used to store Apache SkyWalking server state.
 skywalking_version: '7.0.0' # Specify the Apache SkyWalking version.
 skywalking_oap_jvm_xmx: '1024' # Size of the OAP service heap in MB.
@@ -26,6 +26,7 @@ skywalking_port_arg: # Defines communication port.
 
 # Elastic parameters #
 skywalking_elastic_auth: false # A boolean value, Enable or Disable Elasticsearch authentication.
+skywalking_elastic_https: false # A boolean value, whether Encrypting HTTP client communications.
 skywalking_elastic_cluster: '{{ skywalking_cluster }}' # Specify name for your Elastic cluster name.
 skywalking_elastic_hosts: # List of Elasticsearch hosts Apache SkyWalking should connect to.
   - 'localhost'

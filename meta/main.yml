@@ -64,8 +64,9 @@ dependencies:
     when: skywalking_zoo_dept | bool or skywalking_servers | length > 1
   - role: 'ansible-role-linux-elasticsearch'
     vars:
-      elastic_auth: '{{ skywalking_elastic_auth }}'
-      elastic_cluster: '{{ skywalking_elastic_cluster }}'
+      elastic_auth: '{{ skywalking_elastic_auth | bool }}'
+      elastic_https: '{{ skywalking_elastic_https | bool }}'
+      elastic_cluster: '{{ skywalking_elastic_cluster | default("skywalking") }}'
       elastic_pass: '{{ skywalking_elastic_pass }}'
       elastic_path: '{{ skywalking_elastic_path }}'
       elastic_port_rest: '{{ skywalking_elastic_port_rest }}'
