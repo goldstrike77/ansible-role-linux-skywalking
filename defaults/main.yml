@@ -34,7 +34,7 @@ skywalking_elastic_pass: 'changeme' # Elasticsearch authenticated password.
 skywalking_elastic_path: '{{ skywalking_path }}' # Specify the ElasticSearch data directory.
 skywalking_elastic_port_rest: '9200' # Elasticsearch REST port.
 skywalking_elastic_user: 'elastic' # Elasticsearch authenticated user.
-skywalking_elastic_version: '7.5.2' # Specify the Elasticsearch version.
+skywalking_elastic_version: '7.6.2' # Specify the Elasticsearch version.
 skywalking_elastic_heap_size: '2g' # Specify the maximum memory allocation pool for a Java virtual machine.
 
 # ZooKeeper parameters #

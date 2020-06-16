@@ -10,6 +10,8 @@ ___
 __Table of Contents__
 
 - [Overview](#overview)
+  * [Instructions](#instructions)
+  * [Abstract](#abstract)
 - [Requirements](#requirements)
   * [Operating systems](#operating-systems)
   * [Skywalking Versions](#skywalking-versions)
@@ -31,6 +33,17 @@ Apache SkyWalking is an open source APM system, including monitoring, tracing, d
 ### Instructions
 <p><img src="https://raw.githubusercontent.com/goldstrike77/goldstrike77.github.io/master/img/skywalking-illustration.jpg" /></p>
 
+### Abstract
+The core features are following:
+- Service instance, endpoint metrics and dependency analysis.
+- Service topology map analysis.
+- Root cause analysis, Profile the code on the runtime.
+- Slow services and endpoints detected.
+- Performance optimization.
+- Distributed tracing and context propagation.
+- Database access metrics, Detect slow database access statements.
+- Alarm.
+
 ## Requirements
 ### Operating systems
 This Ansible role installs skywalking on linux operating system, including establishing a filesystem structure and server configuration with some common operational features. Only cluster management of ZooKeeper and Elasticsearch backend storage is supported.
@@ -43,7 +56,7 @@ This role will work on the following operating systems:
 
 The following list of supported the Skywalking releases:
 
-* skywalking 7.0.0
+* skywalking 7.0.0, 8.0.0
 
 ## Role variables
 ### Main parameters #
@@ -133,7 +146,7 @@ Including an example of how to use your role (for instance, with variables passe
 You can also use the group_vars or the host_vars files for setting the variables needed for this role. File you should change: group_vars/all or host_vars/`group_name`
 
 ```yaml
-skywalking_cluster: 'demo'
+skywalking_cluster: 'skywalking'
 skywalking_path: '/data'
 skywalking_version: '7.0.0'
 skywalking_oap_jvm_xmx: '1024'
@@ -158,7 +171,7 @@ skywalking_elastic_pass: 'changeme'
 skywalking_elastic_path: '{{ skywalking_path }}'
 skywalking_elastic_port_rest: '9200'
 skywalking_elastic_user: 'elastic'
-skywalking_elastic_version: '7.5.2'
+skywalking_elastic_version: '7.6.2'
 skywalking_elastic_heap_size: '2g'
 skywalking_zoo_version: '3.5.8'
 skywalking_zoo_cluster: '{{ skywalking_cluster }}'
